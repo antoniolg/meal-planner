@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.devexpert.mealplanner.BuildConfig
 import io.devexpert.mealplanner.data.datasource.MealPlanDataSource
 import io.devexpert.mealplanner.data.datasource.OpenAIMealPlanDataSource
 import io.devexpert.mealplanner.data.repository.MealPlanRepositoryImpl
@@ -26,7 +27,7 @@ object AppModule {
     @Singleton
     fun provideOpenAI(): OpenAI {
         return OpenAI(
-            token = "API_KEY",
+            token = BuildConfig.OPENAI_API_KEY,
             timeout = Timeout(socket = 120.seconds)
         )
     }

@@ -1,0 +1,8 @@
+# This is an example file for local.properties
+# Copy this file to local.properties and replace the values with your own
+
+# SDK location (this will be different for each developer)
+sdk.dir=/path/to/your/Android/sdk
+
+# OpenAI API Key (required for the app to function)
+openai.api.key=YOUR_OPENAI_API_KEY_HERE
