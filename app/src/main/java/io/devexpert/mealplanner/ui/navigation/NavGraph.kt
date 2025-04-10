@@ -1,6 +1,9 @@
 package io.devexpert.mealplanner.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,6 +37,16 @@ fun MealPlannerNavGraph(
     startDestination: String = Destinations.CHAT_SCREEN
 ) {
     val viewModel: ChatViewModel = hiltViewModel()
+    val hasMealPlan by viewModel.hasMealPlan.collectAsState()
+    
+    // Efecto para navegar directamente a la pantalla del plan de comidas si ya existe un menú
+    LaunchedEffect(hasMealPlan) {
+        if (hasMealPlan && navController.currentDestination?.route == Destinations.CHAT_SCREEN) {
+            navController.navigate(Destinations.MEAL_PLAN_SCREEN) {
+                popUpTo(Destinations.CHAT_SCREEN) { inclusive = true }
+            }
+        }
+    }
     
     NavHost(
         navController = navController,
@@ -44,7 +57,9 @@ fun MealPlannerNavGraph(
             ChatScreen(
                 viewModel = viewModel,
                 onMealPlanGenerated = {
-                    navController.navigate(Destinations.MEAL_PLAN_SCREEN)
+                    navController.navigate(Destinations.MEAL_PLAN_SCREEN) {
+                        popUpTo(Destinations.CHAT_SCREEN) { inclusive = true }
+                    }
                 }
             )
         }
@@ -56,6 +71,11 @@ fun MealPlannerNavGraph(
                     val dayIndex = viewModel.uiState.value.mealPlan?.days?.indexOf(dayPlan) ?: 0
                     val mealIndex = dayPlan.meals.indexOf(meal)
                     navController.navigate(Destinations.mealDetailRoute(dayIndex, mealIndex))
+                },
+                onNewPlanClick = {
+                    navController.navigate(Destinations.CHAT_SCREEN) {
+                        popUpTo(Destinations.MEAL_PLAN_SCREEN) { inclusive = true }
+                    }
                 }
             )
         }

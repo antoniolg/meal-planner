@@ -8,6 +8,7 @@ import io.devexpert.mealplanner.domain.repository.MealPlanRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +20,30 @@ class ChatViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(ChatUiState())
     val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
+    
+    private val _hasMealPlan = MutableStateFlow(false)
+    val hasMealPlan: StateFlow<Boolean> = _hasMealPlan.asStateFlow()
+
+    init {
+        loadLatestMealPlan()
+        checkIfHasMealPlan()
+    }
+    
+    private fun loadLatestMealPlan() {
+        viewModelScope.launch {
+            mealPlanRepository.getLatestMealPlan().collectLatest { mealPlan ->
+                _uiState.update { it.copy(mealPlan = mealPlan) }
+            }
+        }
+    }
+    
+    private fun checkIfHasMealPlan() {
+        viewModelScope.launch {
+            mealPlanRepository.hasMealPlan().collectLatest { hasMealPlan ->
+                _hasMealPlan.value = hasMealPlan
+            }
+        }
+    }
 
     fun generateMealPlan(prompt: String) {
         if (prompt.isBlank()) return
@@ -35,6 +60,7 @@ class ChatViewModel @Inject constructor(
                                 mealPlan = mealPlan
                             )
                         }
+                        _hasMealPlan.value = true
                     },
                     onFailure = { error ->
                         _uiState.update { 
@@ -46,6 +72,20 @@ class ChatViewModel @Inject constructor(
                     }
                 )
             }
+        }
+    }
+    
+    fun deleteMealPlan(id: Long) {
+        viewModelScope.launch {
+            mealPlanRepository.deleteMealPlan(id)
+        }
+    }
+    
+    fun deleteAllMealPlans() {
+        viewModelScope.launch {
+            mealPlanRepository.deleteAllMealPlans()
+            _uiState.update { it.copy(mealPlan = null) }
+            _hasMealPlan.value = false
         }
     }
 }

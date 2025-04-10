@@ -75,6 +75,11 @@ dependencies {
     // ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    
     // OpenAI
     implementation(libs.openai)
     implementation(libs.ktor.client.okhttp)

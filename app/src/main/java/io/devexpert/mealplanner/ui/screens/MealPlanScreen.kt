@@ -8,11 +8,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,17 +31,28 @@ import io.devexpert.mealplanner.ui.viewmodel.ChatViewModel
 fun MealPlanScreen(
     modifier: Modifier = Modifier,
     viewModel: ChatViewModel = hiltViewModel(),
-    onMealClick: (DayPlan, Meal) -> Unit
+    onMealClick: (DayPlan, Meal) -> Unit,
+    onNewPlanClick: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.meal_plan_title)) }
+                title = { Text(stringResource(R.string.meal_plan_title)) },
+                actions = {
+                    IconButton(onClick = onNewPlanClick) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Crear nuevo plan"
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior
             )
         },
-        modifier = modifier
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -53,7 +66,7 @@ fun MealPlanScreen(
                 )
             } ?: run {
                 // Si no hay plan de comidas, mostrar un mensaje
-                EmptyState()
+                EmptyState(onNewPlanClick = onNewPlanClick)
             }
         }
     }
@@ -66,9 +79,9 @@ fun MealPlanContent(
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(16.dp)
     ) {
         items(mealPlan.days) { dayPlan ->
             DayCard(
@@ -160,7 +173,7 @@ fun MealItem(
 }
 
 @Composable
-fun EmptyState() {
+fun EmptyState(onNewPlanClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -177,9 +190,24 @@ fun EmptyState() {
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = "Go back and generate a meal plan first",
+            text = "Create a new meal plan",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Button(
+            onClick = onNewPlanClick,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = null,
+                modifier = Modifier.size(ButtonDefaults.IconSize)
+            )
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text("Create New Plan")
+        }
     }
 }

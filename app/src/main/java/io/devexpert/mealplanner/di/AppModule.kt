@@ -8,8 +8,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.devexpert.mealplanner.BuildConfig
+import io.devexpert.mealplanner.data.datasource.LocalMealPlanDataSource
 import io.devexpert.mealplanner.data.datasource.MealPlanDataSource
 import io.devexpert.mealplanner.data.datasource.OpenAIMealPlanDataSource
+import io.devexpert.mealplanner.data.local.dao.MealPlanDao
 import io.devexpert.mealplanner.data.repository.MealPlanRepositoryImpl
 import io.devexpert.mealplanner.domain.repository.MealPlanRepository
 import javax.inject.Singleton
@@ -37,10 +39,19 @@ object AppModule {
     fun provideMealPlanDataSource(openAI: OpenAI, gson: Gson): MealPlanDataSource {
         return OpenAIMealPlanDataSource(openAI, gson)
     }
+    
+    @Provides
+    @Singleton
+    fun provideLocalMealPlanDataSource(mealPlanDao: MealPlanDao): LocalMealPlanDataSource {
+        return LocalMealPlanDataSource(mealPlanDao)
+    }
 
     @Provides
     @Singleton
-    fun provideMealPlanRepository(dataSource: MealPlanDataSource): MealPlanRepository {
-        return MealPlanRepositoryImpl(dataSource)
+    fun provideMealPlanRepository(
+        remoteDataSource: MealPlanDataSource,
+        localDataSource: LocalMealPlanDataSource
+    ): MealPlanRepository {
+        return MealPlanRepositoryImpl(remoteDataSource, localDataSource)
     }
 }
