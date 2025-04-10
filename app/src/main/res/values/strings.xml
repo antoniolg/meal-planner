@@ -3,4 +3,9 @@
     <string name="describe_meal_plan">Describe your meal plan</string>
     <string name="meal_plan_hint">E.g: Weekly vegetarian plan for 2 people…</string>
     <string name="generate_plan">Generate Plan</string>
+    <string name="meal_plan_title">Weekly Meal Plan</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="recipe">Recipe</string>
+    <string name="view_details">View Details</string>
+    <string name="back">Back</string>
 </resources>

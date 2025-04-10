@@ -4,4 +4,9 @@
     <string name="describe_meal_plan">Describe tu plan de comidas</string>
     <string name="meal_plan_hint">Ej: Plan semanal vegetariano para 2 personas…</string>
     <string name="generate_plan">Generar Plan</string>
+    <string name="meal_plan_title">Plan Semanal de Comidas</string>
+    <string name="ingredients">Ingredientes</string>
+    <string name="recipe">Receta</string>
+    <string name="view_details">Ver Detalles</string>
+    <string name="back">Volver</string>
 </resources>

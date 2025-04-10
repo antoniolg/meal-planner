@@ -16,7 +16,8 @@ import io.devexpert.mealplanner.ui.viewmodel.ChatViewModel
 @Composable
 fun ChatScreen(
     modifier: Modifier = Modifier,
-    viewModel: ChatViewModel = hiltViewModel()
+    viewModel: ChatViewModel = hiltViewModel(),
+    onMealPlanGenerated: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var message by remember { mutableStateOf("") }
@@ -90,7 +91,7 @@ fun ChatScreen(
                 )
             }
             
-            // Si tenemos un plan de comidas, mostrar un mensaje de éxito
+            // Si tenemos un plan de comidas, mostrar un mensaje de éxito y un botón para verlo
             uiState.mealPlan?.let {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -98,6 +99,17 @@ fun ChatScreen(
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodyLarge
                 )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Button(
+                    onClick = onMealPlanGenerated,
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .height(56.dp)
+                ) {
+                    Text("Ver Plan de Comidas")
+                }
             }
 
             LaunchedEffect(uiState.mealPlan) {

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import io.devexpert.mealplanner.ui.screens.ChatScreen
+import io.devexpert.mealplanner.ui.navigation.MealPlannerNavGraph
 import io.devexpert.mealplanner.ui.theme.MealPlannerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MealPlannerTheme {
-                ChatScreen()
+                MealPlannerNavGraph()
             }
         }
     }
