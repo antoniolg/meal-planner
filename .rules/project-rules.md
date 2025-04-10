@@ -1,12 +1,14 @@
 # Chat AI
 
-Estamos desarrollando una App para chatear con una IA.
+Estamos desarrollando una App para crear un plan de comidas semanal utilizando la API de OpenAI.
 
-Para ello, tendremos una pantalla principal, donde podremos iniciar conversaciones con la IA, de tal forma que por cada mensaje que enviemos, la IA nos devuelva una respuesta.
+Para ello, el usuario tendrá inicialmente una caja donde podrá incluir los detalles para que se genere el plan de comidas.
 
-Esta IA siempre debe recibir como contexto toda la conversación previa, para que le sea más sencillo generar una nueva respuesta coherente.
+La API responderá entonces con un Json con el listado de lunes a domingo con las comidas recomendadas, así como los pasos para prepararlo (la receta) y un listado de ingredientes y cantidades.
 
-Además, también desarrollaremos la funcionalidad de historial, donde tendremos un menú lateral que podremos desplegar y seleccionar conversaciones previas. Este menú, tendrá un botón en la parte superior que nos permita iniciar una nueva conversación.
+Una vez se genere el plan de comidas, se mostrará una nueva pantalla con un listado donde se puedan ver las comidas separadas por cada día de la semana.
+
+Además, el usuario podrá hacer click sobre cada una de las comidas para ver la receta y los pasos para prepararla.
 
 ## Tecnologías
 

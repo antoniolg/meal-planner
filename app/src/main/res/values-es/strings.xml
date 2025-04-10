@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Planificador de Comidas</string>
+    <string name="describe_meal_plan">Describe tu plan de comidas</string>
+    <string name="meal_plan_hint">Ej: Plan semanal vegetariano para 2 personas…</string>
+    <string name="generate_plan">Generar Plan</string>
+</resources>
