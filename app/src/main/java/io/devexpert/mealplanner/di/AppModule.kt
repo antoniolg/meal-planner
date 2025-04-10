@@ -9,11 +9,15 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.devexpert.mealplanner.BuildConfig
 import io.devexpert.mealplanner.data.datasource.LocalMealPlanDataSource
+import io.devexpert.mealplanner.data.datasource.LocalShoppingItemDataSource
 import io.devexpert.mealplanner.data.datasource.MealPlanDataSource
 import io.devexpert.mealplanner.data.datasource.OpenAIMealPlanDataSource
 import io.devexpert.mealplanner.data.local.dao.MealPlanDao
+import io.devexpert.mealplanner.data.local.dao.ShoppingItemDao
 import io.devexpert.mealplanner.data.repository.MealPlanRepositoryImpl
+import io.devexpert.mealplanner.data.repository.ShoppingItemRepositoryImpl
 import io.devexpert.mealplanner.domain.repository.MealPlanRepository
+import io.devexpert.mealplanner.domain.repository.ShoppingItemRepository
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 
@@ -45,6 +49,12 @@ object AppModule {
     fun provideLocalMealPlanDataSource(mealPlanDao: MealPlanDao): LocalMealPlanDataSource {
         return LocalMealPlanDataSource(mealPlanDao)
     }
+    
+    @Provides
+    @Singleton
+    fun provideLocalShoppingItemDataSource(shoppingItemDao: ShoppingItemDao): LocalShoppingItemDataSource {
+        return LocalShoppingItemDataSource(shoppingItemDao)
+    }
 
     @Provides
     @Singleton
@@ -53,5 +63,13 @@ object AppModule {
         localDataSource: LocalMealPlanDataSource
     ): MealPlanRepository {
         return MealPlanRepositoryImpl(remoteDataSource, localDataSource)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideShoppingItemRepository(
+        localDataSource: LocalShoppingItemDataSource
+    ): ShoppingItemRepository {
+        return ShoppingItemRepositoryImpl(localDataSource)
     }
 }

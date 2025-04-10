@@ -8,4 +8,10 @@
     <string name="recipe">Recipe</string>
     <string name="view_details">View Details</string>
     <string name="back">Back</string>
+    <string name="shopping_list">Shopping List</string>
+    <string name="shopping_list_title">Shopping List</string>
+    <string name="empty_shopping_list">Your shopping list is empty</string>
+    <string name="generate_shopping_list">Generate from meal plan</string>
+    <string name="clear_shopping_list">Clear list</string>
+    <string name="delete_item">Delete item</string>
 </resources>

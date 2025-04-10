@@ -9,4 +9,10 @@
     <string name="recipe">Receta</string>
     <string name="view_details">Ver Detalles</string>
     <string name="back">Volver</string>
+    <string name="shopping_list">Lista de la Compra</string>
+    <string name="shopping_list_title">Lista de la Compra</string>
+    <string name="empty_shopping_list">Tu lista de la compra está vacía</string>
+    <string name="generate_shopping_list">Generar desde plan de comidas</string>
+    <string name="clear_shopping_list">Limpiar lista</string>
+    <string name="delete_item">Eliminar artículo</string>
 </resources>

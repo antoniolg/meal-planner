@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,7 +33,8 @@ fun MealPlanScreen(
     modifier: Modifier = Modifier,
     viewModel: ChatViewModel = hiltViewModel(),
     onMealClick: (DayPlan, Meal) -> Unit,
-    onNewPlanClick: () -> Unit = {}
+    onNewPlanClick: () -> Unit = {},
+    onShoppingListClick: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -42,6 +44,12 @@ fun MealPlanScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.meal_plan_title)) },
                 actions = {
+                    IconButton(onClick = onShoppingListClick) {
+                        Icon(
+                            imageVector = Icons.Default.ShoppingCart,
+                            contentDescription = stringResource(R.string.shopping_list)
+                        )
+                    }
                     IconButton(onClick = onNewPlanClick) {
                         Icon(
                             imageVector = Icons.Default.Add,

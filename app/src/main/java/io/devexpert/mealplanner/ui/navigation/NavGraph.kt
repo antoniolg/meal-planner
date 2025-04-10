@@ -18,12 +18,15 @@ import io.devexpert.mealplanner.domain.model.Meal
 import io.devexpert.mealplanner.ui.screens.ChatScreen
 import io.devexpert.mealplanner.ui.screens.MealDetailScreen
 import io.devexpert.mealplanner.ui.screens.MealPlanScreen
+import io.devexpert.mealplanner.ui.screens.ShoppingListScreen
 import io.devexpert.mealplanner.ui.viewmodel.ChatViewModel
+import io.devexpert.mealplanner.ui.viewmodel.ShoppingListViewModel
 
 object Destinations {
     const val CHAT_SCREEN = "chat"
     const val MEAL_PLAN_SCREEN = "meal_plan"
     const val MEAL_DETAIL_SCREEN = "meal_detail/{dayIndex}/{mealIndex}"
+    const val SHOPPING_LIST_SCREEN = "shopping_list"
     
     fun mealDetailRoute(dayIndex: Int, mealIndex: Int): String {
         return "meal_detail/$dayIndex/$mealIndex"
@@ -76,6 +79,9 @@ fun MealPlannerNavGraph(
                     navController.navigate(Destinations.CHAT_SCREEN) {
                         popUpTo(Destinations.MEAL_PLAN_SCREEN) { inclusive = true }
                     }
+                },
+                onShoppingListClick = {
+                    navController.navigate(Destinations.SHOPPING_LIST_SCREEN)
                 }
             )
         }
@@ -101,6 +107,22 @@ fun MealPlannerNavGraph(
             MealDetailScreen(
                 dayPlan = dayPlan,
                 meal = meal,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        
+        composable(Destinations.SHOPPING_LIST_SCREEN) {
+            val shoppingListViewModel: ShoppingListViewModel = hiltViewModel()
+            
+            // Generar la lista de compra a partir del plan de comidas cuando se navega a esta pantalla
+            LaunchedEffect(Unit) {
+                viewModel.uiState.value.mealPlan?.let { mealPlan ->
+                    shoppingListViewModel.generateShoppingListFromMealPlan()
+                }
+            }
+            
+            ShoppingListScreen(
+                viewModel = shoppingListViewModel,
                 onBackClick = { navController.popBackStack() }
             )
         }
